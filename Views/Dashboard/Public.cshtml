@@ -1,0 +1,188 @@
+@model CivicRequestPortal.Models.ViewModels.DashboardViewModel
+@{
+    ViewData["Title"] = "Genel Dashboard";
+}
+
+<div class="row mb-4">
+    <div class="col-12">
+        <h2><i class="bi bi-graph-up"></i> Genel Dashboard</h2>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card text-white bg-primary">
+            <div class="card-body">
+                <h5 class="card-title">Toplam Şikayet</h5>
+                <h2 class="mb-0">@Model.TotalRequests</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-warning">
+            <div class="card-body">
+                <h5 class="card-title">Bekleyen</h5>
+                <h2 class="mb-0">@Model.PendingRequests</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-info">
+            <div class="card-body">
+                <h5 class="card-title">Devam Eden</h5>
+                <h2 class="mb-0">@Model.InProgressRequests</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-success">
+            <div class="card-body">
+                <h5 class="card-title">Çözülen</h5>
+                <h2 class="mb-0">@Model.ResolvedRequests</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">SLA Performansı</h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <strong>SLA Başarı Oranı:</strong>
+                    <div class="progress" style="height: 30px;">
+                        <div class="progress-bar @(Model.SLAAchievementRate >= 80 ? "bg-success" : Model.SLAAchievementRate >= 60 ? "bg-warning" : "bg-danger")" 
+                             role="progressbar" style="width: @Model.SLAAchievementRate%">
+                            @Model.SLAAchievementRate.ToString("F1")%
+                        </div>
+                    </div>
+                </div>
+                <p><strong>Ortalama Çözüm Süresi:</strong> @Model.AverageResolutionTime.ToString("F1") saat</p>
+                <p><strong>SLA Aşılan Şikayetler:</strong> <span class="badge bg-danger">@Model.SLABreachedRequests</span></p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card shadow">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0">Durum Dağılımı</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="statusChart" width="400" height="200"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="card shadow">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0">Aylık Trend</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="trendChart" width="400" height="100"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card shadow">
+            <div class="card-header bg-warning text-dark">
+                <h5 class="mb-0">Kategori İstatistikleri</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Kategori</th>
+                                <th>Şikayet Sayısı</th>
+                                <th>Ortalama Çözüm Süresi (Saat)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var stat in Model.CategoryStatistics)
+                            {
+                                <tr>
+                                    <td><strong>@stat.CategoryName</strong></td>
+                                    <td>@stat.RequestCount</td>
+                                    <td>@stat.AverageResolutionTime.ToString("F1")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-12 text-center">
+        <a asp-controller="Dashboard" asp-action="SLA" class="btn btn-primary btn-lg">
+            <i class="bi bi-clock-history"></i> SLA Dashboard
+        </a>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Status Distribution Chart
+        var statusCtx = document.getElementById('statusChart').getContext('2d');
+        var statusChart = new Chart(statusCtx, {
+            type: 'doughnut',
+            data: {
+                labels: [@Html.Raw(string.Join(",", Model.StatusDistribution.Select(s => $"'{s.StatusName}'")))],
+                datasets: [{
+                    data: [@string.Join(",", Model.StatusDistribution.Select(s => s.Count))],
+                    backgroundColor: [
+                        '#0d6efd', '#198754', '#ffc107', '#0dcaf0', '#6c757d', '#dc3545'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true
+            }
+        });
+
+        // Monthly Trend Chart
+        var trendCtx = document.getElementById('trendChart').getContext('2d');
+        var trendChart = new Chart(trendCtx, {
+            type: 'line',
+            data: {
+                labels: [@Html.Raw(string.Join(",", Model.MonthlyTrends.Select(t => $"'{t.Month}'")))],
+                datasets: [{
+                    label: 'Gönderilen',
+                    data: [@string.Join(",", Model.MonthlyTrends.Select(t => t.SubmittedCount))],
+                    borderColor: 'rgb(75, 192, 192)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    tension: 0.1
+                }, {
+                    label: 'Çözülen',
+                    data: [@string.Join(",", Model.MonthlyTrends.Select(t => t.ResolvedCount))],
+                    borderColor: 'rgb(255, 99, 132)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+}
+

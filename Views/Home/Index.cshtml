@@ -1,0 +1,80 @@
+﻿@{
+    ViewData["Title"] = "Ana Sayfa";
+}
+
+<div class="jumbotron bg-primary text-white text-center py-5 mb-5 rounded">
+    <h1 class="display-4"><i class="bi bi-building"></i> Vatandaş Çözüm Merkezi</h1>
+    <p class="lead">Vatandaşlarımızın şikayetlerini kolayca iletmeleri ve takip etmeleri için oluşturulmuş bir platformdur.</p>
+</div>
+
+<div class="row mb-5">
+    <div class="col-md-4 mb-4">
+        <div class="card shadow h-100 text-center">
+            <div class="card-body">
+                <i class="bi bi-plus-circle display-1 text-primary"></i>
+                <h3 class="card-title mt-3">Şikayet Oluştur</h3>
+                <p class="card-text">Yeni bir şikayet oluşturun ve tarafımıza iletin. Harita üzerinden konumunuzu işaretleyebilirsiniz.</p>
+                <a asp-controller="Requests" asp-action="Create" class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i> Şikayet Oluştur
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card shadow h-100 text-center">
+            <div class="card-body">
+                <i class="bi bi-search display-1 text-info"></i>
+                <h3 class="card-title mt-3">Şikayet Takip</h3>
+                <p class="card-text">Mevcut şikayetlerinizin durumunu takip edin ve güncellemeleri görüntüleyin.</p>
+                <a asp-controller="Requests" asp-action="Track" class="btn btn-info">
+                    <i class="bi bi-search"></i> Şikayet Takip
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card shadow h-100 text-center">
+            <div class="card-body">
+                <i class="bi bi-graph-up display-1 text-success"></i>
+                <h3 class="card-title mt-3">Genel Dashboard</h3>
+                <p class="card-text">Şikayet istatistiklerini, trendleri ve SLA performansını görüntüleyin.</p>
+                <a asp-controller="Dashboard" asp-action="Public" class="btn btn-success">
+                    <i class="bi bi-graph-up"></i> Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card shadow">
+            <div class="card-header bg-light">
+                <h4 class="mb-0"><i class="bi bi-info-circle"></i> Nasıl Kullanılır?</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5><i class="bi bi-1-circle text-primary"></i> Şikayet Oluşturma</h5>
+                        <ul>
+                            <li>Yukarıdaki "Şikayet Oluştur" butonuna tıklayın</li>
+                            <li>Şikayet başlığı ve detaylarını girin</li>
+                            <li>Kategori ve belediye seçin</li>
+                            <li>Harita üzerinden konumunuzu işaretleyin</li>
+                            <li>Formu gönderin ve şikayet numaranızı kaydedin</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h5><i class="bi bi-2-circle text-info"></i> Şikayet Takibi</h5>
+                        <ul>
+                            <li>"Şikayet Takip" sayfasına gidin</li>
+                            <li>Şikayet numaranızı girin</li>
+                            <li>Şikayetinizin durumunu ve güncellemeleri görüntüleyin</li>
+                            <li>Email bildirimleri ile otomatik güncellemeler alın</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

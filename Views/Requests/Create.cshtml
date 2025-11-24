@@ -1,0 +1,190 @@
+@model CivicRequestPortal.Models.ViewModels.ServiceRequestViewModel
+@{
+    ViewData["Title"] = "Şikayet Oluştur";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0"><i class="bi bi-plus-circle"></i> Yeni Şikayet Oluştur</h3>
+            </div>
+            <div class="card-body">
+                <form asp-action="Create" method="post" id="requestForm">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="Title" class="form-label"></label>
+                        <input asp-for="Title" class="form-control" placeholder="Şikayet başlığını giriniz" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Description" class="form-label"></label>
+                        <textarea asp-for="Description" class="form-control" rows="5" placeholder="Şikayet detaylarını açıklayınız"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="FirstName" class="form-label"></label>
+                            <input asp-for="FirstName" class="form-control" placeholder="Adınızı giriniz" />
+                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="LastName" class="form-label"></label>
+                            <input asp-for="LastName" class="form-control" placeholder="Soyadınızı giriniz" />
+                            <span asp-validation-for="LastName" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Email" class="form-label"></label>
+                            <input asp-for="Email" class="form-control" placeholder="E-posta adresinizi giriniz" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="PhoneNumber" class="form-label"></label>
+                            <input asp-for="PhoneNumber" class="form-control" placeholder="Telefon numaranız (opsiyonel)" />
+                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="CategoryId" class="form-label"></label>
+                            <select asp-for="CategoryId" class="form-select">
+                                <option value="">-- Kategori Seçiniz --</option>
+                                @foreach (var category in ViewBag.Categories)
+                                {
+                                    <option value="@category.CategoryId">@category.Name</option>
+                                }
+                            </select>
+                            <span asp-validation-for="CategoryId" class="text-danger"></span>
+                        </div>
+
+                        <!-- Municipality removed from the form -->
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Priority" class="form-label">Öncelik</label>
+                        <select asp-for="Priority" class="form-select">
+                            <option value="1">Yüksek</option>
+                            <option value="2">Orta</option>
+                            <option value="3" selected>Düşük</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Konum Seçimi</label>
+                        <div id="map" style="height: 400px; width: 100%; border: 1px solid #ddd; border-radius: 5px;"></div>
+                        <small class="text-muted">Haritada konumu seçmek için tıklayın</small>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Address" class="form-label"></label>
+                            <input asp-for="Address" class="form-control" id="addressInput" placeholder="Adres otomatik doldurulacak" />
+                            <span asp-validation-for="Address" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label asp-for="Latitude" class="form-label">Enlem</label>
+                            <input asp-for="Latitude" class="form-control" id="latitudeInput" readonly />
+                            <input type="hidden" id="latitudeInvariant" name="LatitudeInvariant" />
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label asp-for="Longitude" class="form-label">Boylam</label>
+                            <input asp-for="Longitude" class="form-control" id="longitudeInput" readonly />
+                            <input type="hidden" id="longitudeInvariant" name="LongitudeInvariant" />
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="bi bi-check-circle"></i> Şikayeti Gönder
+                        </button>
+                        <a asp-action="Index" asp-controller="Home" class="btn btn-secondary">İptal</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script>
+        var map, marker;
+        var defaultLat = 41.0082; // Istanbul default
+        var defaultLng = 28.9784;
+
+        // Initialize map
+        map = L.map('map').setView([defaultLat, defaultLng], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Add marker on click
+        map.on('click', function(e) {
+            var lat = e.latlng.lat;
+            var lng = e.latlng.lng;
+
+            if (marker) {
+                map.removeLayer(marker);
+            }
+
+            marker = L.marker([lat, lng]).addTo(map);
+            
+            document.getElementById('latitudeInput').value = lat.toFixed(8);
+            document.getElementById('longitudeInput').value = lng.toFixed(8);
+
+            // Reverse geocoding to get address
+            fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.display_name) {
+                        document.getElementById('addressInput').value = data.display_name;
+                    }
+                });
+        });
+
+        // Try to get user's location
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var lat = position.coords.latitude;
+                var lng = position.coords.longitude;
+                map.setView([lat, lng], 15);
+                
+                marker = L.marker([lat, lng]).addTo(map);
+                document.getElementById('latitudeInput').value = lat.toFixed(8);
+                document.getElementById('longitudeInput').value = lng.toFixed(8);
+            });
+        }
+
+        // Before submitting the form, set invariant hidden values for latitude/longitude
+        // so the server can parse them reliably regardless of culture.
+        document.getElementById('requestForm').addEventListener('submit', function () {
+            var latEl = document.getElementById('latitudeInput');
+            var lngEl = document.getElementById('longitudeInput');
+            var latInv = document.getElementById('latitudeInvariant');
+            var lngInv = document.getElementById('longitudeInvariant');
+
+            // Set invariant hidden fields (use dot as decimal separator) for reliable server parsing
+            if (latEl && latEl.value && latInv) {
+                // Normalize any comma to dot for invariant representation
+                var v = latEl.value.replace(/,/g, '.');
+                latInv.value = parseFloat(v).toFixed(8);
+            }
+            if (lngEl && lngEl.value && lngInv) {
+                var w = lngEl.value.replace(/,/g, '.');
+                lngInv.value = parseFloat(w).toFixed(8);
+            }
+
+            // Also keep visible fields in user locale (comma) — do not modify them further
+        });
+    </script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
