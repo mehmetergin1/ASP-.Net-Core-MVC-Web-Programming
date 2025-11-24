@@ -86,10 +86,10 @@ dotnet ef database update
 
 DbContext'te aşağıdaki seed data otomatik olarak eklenir:
 
-- **RequestStatuses**: Submitted, InProgress, Assigned, Resolved, Closed, Rejected
+- **RequestStatuses** (Durumlar): Gönderildi, İnceleniyor, Atandı, Çözüldü, Kapandı, Reddedildi
 
-- **User**: Admin user (admin@civicportal.com)
-- **Categories**: Road Maintenance, Waste Management, Water & Sewage, Parks & Recreation, Street Lighting
+- **User** (Kullanıcı): Admin Kullanıcı (admin@civicportal.com)
+- **Categories** (Kategoriler): Yol Bakım ve Onarım, Atık Yönetimi, Su ve Kanalizasyon, Parklar ve Rekreasyon, Sokak Aydınlatması
 
 ## Önemli Notlar
 

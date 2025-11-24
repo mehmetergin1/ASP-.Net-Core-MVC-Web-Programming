@@ -84,14 +84,14 @@ public class ApplicationDbContext : DbContext
 
     private void SeedData(ModelBuilder modelBuilder)
     {
-        // Seed RequestStatuses
+        // Seed RequestStatuses (Türkçe)
         modelBuilder.Entity<RequestStatus>().HasData(
-            new RequestStatus { StatusId = 1, Name = "Submitted", Description = "Request has been submitted", BadgeColor = "secondary", DisplayOrder = 1 },
-            new RequestStatus { StatusId = 2, Name = "InProgress", Description = "Request is being reviewed", BadgeColor = "primary", DisplayOrder = 2 },
-            new RequestStatus { StatusId = 3, Name = "Assigned", Description = "Request has been assigned", BadgeColor = "info", DisplayOrder = 3 },
-            new RequestStatus { StatusId = 4, Name = "Resolved", Description = "Request has been resolved", BadgeColor = "success", DisplayOrder = 4 },
-            new RequestStatus { StatusId = 5, Name = "Closed", Description = "Request is closed", BadgeColor = "dark", DisplayOrder = 5 },
-            new RequestStatus { StatusId = 6, Name = "Rejected", Description = "Request has been rejected", BadgeColor = "danger", DisplayOrder = 6 }
+            new RequestStatus { StatusId = 1, Name = "Gönderildi", Description = "Şikayet gönderildi", BadgeColor = "secondary", DisplayOrder = 1 },
+            new RequestStatus { StatusId = 2, Name = "İnceleniyor", Description = "Şikayet inceleniyor", BadgeColor = "primary", DisplayOrder = 2 },
+            new RequestStatus { StatusId = 3, Name = "Atandı", Description = "Şikayet personele atandı", BadgeColor = "info", DisplayOrder = 3 },
+            new RequestStatus { StatusId = 4, Name = "Çözüldü", Description = "Şikayet çözüldü", BadgeColor = "success", DisplayOrder = 4 },
+            new RequestStatus { StatusId = 5, Name = "Kapandı", Description = "Şikayet kapatıldı", BadgeColor = "dark", DisplayOrder = 5 },
+            new RequestStatus { StatusId = 6, Name = "Reddedildi", Description = "Şikayet reddedildi", BadgeColor = "danger", DisplayOrder = 6 }
         );
 
 
@@ -101,7 +101,7 @@ public class ApplicationDbContext : DbContext
             {
                 UserId = 1,
                 FirstName = "Admin",
-                LastName = "User",
+                LastName = "Kullanıcı",
                 Email = "admin@civicportal.com",
                 UserType = "Admin",
                 CreatedAt = DateTime.Now,
@@ -109,13 +109,13 @@ public class ApplicationDbContext : DbContext
             }
         );
 
-        // Seed default categories
+        // Seed default categories (Türkçe)
         modelBuilder.Entity<Category>().HasData(
-            new Category { CategoryId = 1, Name = "Road Maintenance", Description = "Potholes, road repairs, signage", DefaultSLAHours = 72, CreatedAt = DateTime.Now, IsActive = true },
-            new Category { CategoryId = 2, Name = "Waste Management", Description = "Garbage collection, recycling", DefaultSLAHours = 48, CreatedAt = DateTime.Now, IsActive = true },
-            new Category { CategoryId = 3, Name = "Water & Sewage", Description = "Water leaks, sewage issues", DefaultSLAHours = 24, CreatedAt = DateTime.Now, IsActive = true },
-            new Category { CategoryId = 4, Name = "Parks & Recreation", Description = "Park maintenance, playground equipment", DefaultSLAHours = 96, CreatedAt = DateTime.Now, IsActive = true },
-            new Category { CategoryId = 5, Name = "Street Lighting", Description = "Broken street lights", DefaultSLAHours = 48,  CreatedAt = DateTime.Now, IsActive = true }
+            new Category { CategoryId = 1, Name = "Yol Bakım ve Onarım", Description = "Çukurlar, yol onarımları, işaretler", DefaultSLAHours = 72, CreatedAt = DateTime.Now, IsActive = true },
+            new Category { CategoryId = 2, Name = "Atık Yönetimi", Description = "Çöp toplama, geri dönüşüm", DefaultSLAHours = 48, CreatedAt = DateTime.Now, IsActive = true },
+            new Category { CategoryId = 3, Name = "Su ve Kanalizasyon", Description = "Su sızıntıları, kanalizasyon sorunları", DefaultSLAHours = 24, CreatedAt = DateTime.Now, IsActive = true },
+            new Category { CategoryId = 4, Name = "Parklar ve Rekreasyon", Description = "Park bakımı, oyun alanları", DefaultSLAHours = 96, CreatedAt = DateTime.Now, IsActive = true },
+            new Category { CategoryId = 5, Name = "Sokak Aydınlatması", Description = "Kırık sokak lambaları", DefaultSLAHours = 48,  CreatedAt = DateTime.Now, IsActive = true }
         );
     }
 }
