@@ -25,7 +25,7 @@ public class User
 
     [Required]
     [StringLength(50)]
-    public string UserType { get; set; } = "Citizen"; // Citizen, Admin, MunicipalityAdmin
+    public string UserType { get; set; } = "Citizen"; // Citizen, Admin
 
     [Required]
     public DateTime CreatedAt { get; set; } = DateTime.Now;

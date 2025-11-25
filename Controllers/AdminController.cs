@@ -123,7 +123,7 @@ public class AdminController : Controller
             .ToListAsync();
 
         ViewBag.Users = await _context.Users
-            .Where(u => (u.UserType == "Admin" || u.UserType == "MunicipalityAdmin") && u.IsActive)
+            .Where(u => u.UserType == "Admin" && u.IsActive)
             .ToListAsync();
 
         return View(request);
