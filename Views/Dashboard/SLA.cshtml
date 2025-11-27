@@ -5,7 +5,7 @@
 
 <div class="row mb-4">
     <div class="col-12">
-        <h2><i class="bi bi-clock-history"></i> SLA Dashboard</h2>
+        <h2><i class="bi bi-clock-history"></i> Ortalama Çözüm Süresi</h2>
     </div>
 </div>
 
@@ -21,7 +21,7 @@
     <div class="col-md-4">
         <div class="card text-white bg-success">
             <div class="card-body">
-                <h5 class="card-title">SLA İçinde</h5>
+                <h5 class="card-title">Hedeflenen Süre İçinde</h5>
                 <h2 class="mb-0">@ViewBag.AchievedRequests</h2>
             </div>
         </div>
@@ -29,7 +29,7 @@
     <div class="col-md-4">
         <div class="card text-white bg-danger">
             <div class="card-body">
-                <h5 class="card-title">SLA Aşıldı</h5>
+                <h5 class="card-title">Hedeflenen Süre Aşıldı</h5>
                 <h2 class="mb-0">@ViewBag.BreachedRequests</h2>
             </div>
         </div>
@@ -38,7 +38,7 @@
 
 <div class="card shadow">
     <div class="card-header bg-warning text-dark">
-        <h5 class="mb-0">SLA Takibi</h5>
+        <h5 class="mb-0">Takip</h5>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -49,9 +49,9 @@
                         <th>Başlık</th>
                         <th>Kategori</th>
                         <th>Gönderilme</th>
-                        <th>SLA Bitiş</th>
+                        <th>Süre Bitiş</th>
                         <th>Durum</th>
-                        <th>SLA Durumu</th>
+                        <th>SüreDurumu</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -114,7 +114,7 @@
 <div class="row mt-4">
     <div class="col-md-12 text-center">
         <a asp-controller="Dashboard" asp-action="Public" class="btn btn-secondary">
-            <i class="bi bi-arrow-left"></i> Genel Dashboard'a Dön
+            <i class="bi bi-arrow-left"></i> Genel İstatistikler'e Dön
         </a>
     </div>
 </div>

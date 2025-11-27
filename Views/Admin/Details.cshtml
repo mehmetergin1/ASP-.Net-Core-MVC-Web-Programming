@@ -3,6 +3,13 @@
     ViewData["Title"] = "Şikayet Detayları - Admin";
 }
 
+@section Styles {
+    @if (Model.Latitude.HasValue && Model.Longitude.HasValue)
+    {
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    }
+}
+
 <div class="row">
     <div class="col-md-12">
         <div class="card shadow mb-4">
@@ -33,7 +40,6 @@
                                 <th>Kategori:</th>
                                 <td>@Model.Category?.Name</td>
                             </tr>
-                            <!-- Municipality removed -->
                             <tr>
                                 <th>Vatandaş:</th>
                                 <td>@Model.User?.FirstName @Model.User?.LastName (@Model.User?.Email)</td>
@@ -57,12 +63,12 @@
                             @if (Model.SLADeadline.HasValue)
                             {
                                 <tr>
-                                    <th>SLA Bitiş:</th>
+                                    <th>Hedef Çözüm Tarihi:</th>
                                     <td>
                                         @Model.SLADeadline.Value.ToString("dd.MM.yyyy HH:mm")
                                         @if (Model.IsSLABreached)
                                         {
-                                            <span class="badge bg-danger ms-2">SLA Aşıldı</span>
+                                            <span class="badge bg-danger ms-2">Süre Aşıldı</span>
                                         }
                                     </td>
                                 </tr>
@@ -187,16 +193,20 @@
     @if (Model.Latitude.HasValue && Model.Longitude.HasValue)
     {
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
         <script>
-            var map = L.map('map').setView([@Model.Latitude.Value, @Model.Longitude.Value], 15);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '© OpenStreetMap contributors'
-            }).addTo(map);
-            
-            L.marker([@Model.Latitude.Value, @Model.Longitude.Value]).addTo(map)
-                .bindPopup('@Model.Address').openPopup();
+            document.addEventListener('DOMContentLoaded', function () {
+                // Use .ToString() with InvariantCulture for decimal values in JavaScript to avoid comma issues
+                var lat = @Model.Latitude.Value.ToString(System.Globalization.CultureInfo.InvariantCulture);
+                var lon = @Model.Longitude.Value.ToString(System.Globalization.CultureInfo.InvariantCulture);
+
+                var map = L.map('map').setView([lat, lon], 15);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '© OpenStreetMap contributors'
+                }).addTo(map);
+                
+                L.marker([lat, lon]).addTo(map)
+                    .bindPopup('@Html.Raw(Model.Address?.Replace("'", "\\'"))').openPopup();
+            });
         </script>
     }
 }
-

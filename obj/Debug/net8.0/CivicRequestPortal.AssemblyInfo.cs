@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CivicRequestPortal")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1b5be8eec71db7a2ec4b461533b21560947a7196")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+378d392c126527001a775cde4204fb36857ae887")]
 [assembly: System.Reflection.AssemblyProductAttribute("CivicRequestPortal")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CivicRequestPortal")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

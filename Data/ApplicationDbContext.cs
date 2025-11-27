@@ -44,6 +44,15 @@ public class ApplicationDbContext : DbContext
             .HasForeignKey(sr => sr.StatusId)
             .OnDelete(DeleteBehavior.Restrict);
 
+        // Unique constraint on RequestNumber
+        modelBuilder.Entity<ServiceRequest>()
+            .HasIndex(sr => sr.RequestNumber)
+            .IsUnique();
+            
+        // Let EF Core know that the ServiceRequests table has a trigger.
+        modelBuilder.Entity<ServiceRequest>()
+            .ToTable(tb => tb.HasTrigger("trg_ServiceRequests_AfterUpdate_StatusChange"));
+
 
         // ServiceRequest - RequestAssignment (One-to-Many)
         modelBuilder.Entity<RequestAssignment>()
@@ -73,11 +82,6 @@ public class ApplicationDbContext : DbContext
             .HasForeignKey(ru => ru.UserId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        // Unique constraint on RequestNumber
-        modelBuilder.Entity<ServiceRequest>()
-            .HasIndex(sr => sr.RequestNumber)
-            .IsUnique();
-
         // Seed initial data
         SeedData(modelBuilder);
     }
@@ -95,7 +99,7 @@ public class ApplicationDbContext : DbContext
         );
 
 
-        // Seed default admin user
+        // Seed default users
         modelBuilder.Entity<User>().HasData(
             new User
             {
@@ -103,6 +107,36 @@ public class ApplicationDbContext : DbContext
                 FirstName = "Admin",
                 LastName = "Kullanıcı",
                 Email = "admin@civicportal.com",
+                UserType = "Admin",
+                CreatedAt = DateTime.Now,
+                IsActive = true
+            },
+            new User
+            {
+                UserId = 2,
+                FirstName = "Ahmet",
+                LastName = "Yılmaz",
+                Email = "ahmet.yilmaz@civicportal.com",
+                UserType = "Admin",
+                CreatedAt = DateTime.Now,
+                IsActive = true
+            },
+            new User
+            {
+                UserId = 3,
+                FirstName = "Zeynep",
+                LastName = "Kaya",
+                Email = "zeynep.kaya@civicportal.com",
+                UserType = "Admin",
+                CreatedAt = DateTime.Now,
+                IsActive = true
+            },
+            new User
+            {
+                UserId = 4,
+                FirstName = "Mustafa",
+                LastName = "Demir",
+                Email = "mustafa.demir@civicportal.com",
                 UserType = "Admin",
                 CreatedAt = DateTime.Now,
                 IsActive = true
@@ -119,4 +153,3 @@ public class ApplicationDbContext : DbContext
         );
     }
 }
-

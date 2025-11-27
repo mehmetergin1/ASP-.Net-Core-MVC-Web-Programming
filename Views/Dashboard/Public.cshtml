@@ -1,11 +1,11 @@
 @model CivicRequestPortal.Models.ViewModels.DashboardViewModel
 @{
-    ViewData["Title"] = "Genel Dashboard";
+    ViewData["Title"] = "Genel İstatistikler";
 }
 
 <div class="row mb-4">
     <div class="col-12">
-        <h2><i class="bi bi-graph-up"></i> Genel Dashboard</h2>
+        <h2><i class="bi bi-graph-up"></i> Genel İstatistikler</h2>
     </div>
 </div>
 
@@ -48,11 +48,11 @@
     <div class="col-md-6">
         <div class="card shadow">
             <div class="card-header bg-primary text-white">
-                <h5 class="mb-0">SLA Performansı</h5>
+                <h5 class="mb-0">Ortalama Çözüm Süresi Performansı</h5>
             </div>
             <div class="card-body">
                 <div class="mb-3">
-                    <strong>SLA Başarı Oranı:</strong>
+                    <strong>Başarı Oranı:</strong>
                     <div class="progress" style="height: 30px;">
                         <div class="progress-bar @(Model.SLAAchievementRate >= 80 ? "bg-success" : Model.SLAAchievementRate >= 60 ? "bg-warning" : "bg-danger")" 
                              role="progressbar" style="width: @Model.SLAAchievementRate%">
@@ -61,7 +61,7 @@
                     </div>
                 </div>
                 <p><strong>Ortalama Çözüm Süresi:</strong> @Model.AverageResolutionTime.ToString("F1") saat</p>
-                <p><strong>SLA Aşılan Şikayetler:</strong> <span class="badge bg-danger">@Model.SLABreachedRequests</span></p>
+                <p><strong>Süre Aşılan Şikayetler:</strong> <span class="badge bg-danger">@Model.SLABreachedRequests</span></p>
             </div>
         </div>
     </div>
@@ -126,7 +126,7 @@
 <div class="row mt-4">
     <div class="col-md-12 text-center">
         <a asp-controller="Dashboard" asp-action="SLA" class="btn btn-primary btn-lg">
-            <i class="bi bi-clock-history"></i> SLA Dashboard
+            <i class="bi bi-clock-history"></i> Ortalama Çözüm Süresi İstatistikleri
         </a>
     </div>
 </div>
