@@ -31,6 +31,8 @@ public class DashboardController : Controller
         model.InProgressRequests = requests.Count(r => r.StatusId == 2 || r.StatusId == 3);
         model.ResolvedRequests = requests.Count(r => r.StatusId == 4);
         model.ClosedRequests = requests.Count(r => r.StatusId == 5);
+        
+        // --- BASİT MANTIĞA GERİ DÖNÜLDÜ ---
         model.SLABreachedRequests = requests.Count(r => r.IsSLABreached);
 
         // Calculate average resolution time
@@ -45,7 +47,8 @@ public class DashboardController : Controller
         var requestsWithSLA = requests.Where(r => r.SLADeadline.HasValue).ToList();
         if (requestsWithSLA.Any())
         {
-            var achievedSLA = requestsWithSLA.Count(r => !r.IsSLABreached || (r.ResolvedAt.HasValue && r.ResolvedAt <= r.SLADeadline));
+            // --- BASİT MANTIĞA GERİ DÖNÜLDÜ ---
+            var achievedSLA = requestsWithSLA.Count(r => !r.IsSLABreached);
             model.SLAAchievementRate = (double)achievedSLA / requestsWithSLA.Count * 100;
         }
 
@@ -110,11 +113,11 @@ public class DashboardController : Controller
             .OrderByDescending(r => r.SubmittedAt)
             .ToListAsync();
 
+        // --- BASİT MANTIĞA GERİ DÖNÜLDÜ ---
         ViewBag.TotalRequests = requests.Count;
         ViewBag.BreachedRequests = requests.Count(r => r.IsSLABreached);
-        ViewBag.AchievedRequests = requests.Count(r => !r.IsSLABreached || (r.ResolvedAt.HasValue && r.ResolvedAt <= r.SLADeadline));
+        ViewBag.AchievedRequests = requests.Count(r => !r.IsSLABreached);
 
         return View(requests);
     }
 }
-
