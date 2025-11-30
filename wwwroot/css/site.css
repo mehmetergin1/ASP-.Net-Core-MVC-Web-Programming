@@ -126,3 +126,31 @@ html {
 body {
   margin-bottom: 60px; /* Footer yüksekliği kadar boşluk */
 }
+/* =================================================================
+   Custom Style Overrides for Readability
+   ================================================================= */
+
+/* 1. Navbar'daki ana başlığın rengini siyah yap */
+.navbar.bg-primary .navbar-brand {
+    color: #000000 !important;
+    font-weight: 700;
+}
+
+/* 2. Ana sayfadaki jumbotron içindeki tüm metinleri siyah yap */
+.jumbotron.bg-primary.text-white h1,
+.jumbotron.bg-primary.text-white .lead {
+    color: #000000 !important;
+}
+
+/* 3. İstatistik panosundaki renkli kartların içindeki başlıkları ve sayıları siyah yap */
+.card.text-white .card-title,
+.card.text-white h2 {
+    color: #000000 !important;
+}
+
+/* 4. Renkli kart başlıklarının içindeki tüm başlıkları (h3, h5 vb.) siyah yap */
+.card-header.bg-primary.text-white h3,
+.card-header.bg-primary.text-white h5,
+.card-header.bg-info.text-white h5 {
+    color: #000000 !important;
+}

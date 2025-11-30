@@ -1,7 +1,7 @@
 ﻿
  /*
   3_Queries.sql file. --DML
-  It includes examples of joins aggregation, subqueries, and view usage.
+  It includes examples of joins, aggregation, subqueries, and view usage.
   */
 
 USE [NewCivicRequestDB];

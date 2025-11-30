@@ -1,4 +1,9 @@
-﻿USE [NewCivicRequestDB];
+﻿/*
+ 2.Programmability.sql file.
+ It includes examples of procedures, functions, and triggers.
+ */
+
+USE [NewCivicRequestDB];
 GO
 -- =================================================================
 -- Stored Procedure: usp_CreateServiceRequest
