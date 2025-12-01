@@ -235,3 +235,42 @@ GO
 -- =============================================
 PRINT 'Representative queries script executed successfully!';
 GO
+
+-- Create a local temporary table
+ CREATE TABLE #TempRequestSummary (
+     CategoryId INT,
+     CategoryName NVARCHAR(100),
+     TotalRequests INT,
+     ResolvedRequests INT
+ );
+-- Populate the temporary table with some aggregated data
+ INSERT INTO #TempRequestSummary (CategoryId, CategoryName, TotalRequests, ResolvedRequests)
+ SELECT
+     c.CategoryId,
+     c.Name AS CategoryName,
+     COUNT(sr.RequestId) AS TotalRequests,
+     COUNT(CASE WHEN sr.StatusId = 4 THEN 1 ELSE NULL END) AS ResolvedRequests
+ FROM
+     dbo.Categories AS c
+         LEFT JOIN
+     dbo.ServiceRequests AS sr ON c.CategoryId = sr.CategoryId
+ GROUP BY
+     c.CategoryId, c.Name;
+
+-- Query the temporary table
+ SELECT
+     CategoryName,
+     TotalRequests,
+     ResolvedRequests,
+     CAST(ResolvedRequests AS DECIMAL(5,2)) / TotalRequests * 100 AS ResolutionRate
+ FROM
+     #TempRequestSummary
+ WHERE
+     TotalRequests > 0
+ ORDER BY
+     ResolutionRate DESC;
+
+ -- The temporary table is automatically dropped when the session ends.
+-- You can also explicitly drop it if needed:
+-- DROP TABLE #TempRequestSummary;
+ GO
