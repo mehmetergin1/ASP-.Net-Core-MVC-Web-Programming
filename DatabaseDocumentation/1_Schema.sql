@@ -43,6 +43,25 @@ CREATE UNIQUE NONCLUSTERED INDEX [IX_Users_Email] ON [dbo].[Users]([Email]);
 END
 GO
 
+    IF NOT EXISTS (
+    SELECT * FROM sys.columns 
+    WHERE object_id = OBJECT_ID('dbo.Users') 
+    AND name = 'LastLoginDate'
+)
+
+-- This script adds a 'LastLoginDate' column to the Users table.
+BEGIN
+ALTER TABLE dbo.Users
+    ADD LastLoginDate DATETIME2 NULL;
+
+PRINT 'Column [LastLoginDate] added to [Users] table.';
+END
+ELSE
+BEGIN
+    PRINT 'Column [LastLoginDate] already exists in [Users] table.';
+END
+GO
+
 -- =============================================
 -- 2. RequestStatuses Table
 -- Lookup table for the status of a service request.
